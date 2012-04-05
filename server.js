@@ -1,6 +1,7 @@
 var socketio = require("socket.io");
 var fs = require("fs");
 var url = require("url");
+var port = process.env['app_port'] || 8092;
 
 var app = require("http").createServer(function(req, resp) {
     var path = url.parse(req.url).pathname;
@@ -36,7 +37,7 @@ sock.sockets.on("connection", function(socket) {
     }
 });
 
-app.listen(8092);
+app.listen(port);
 
 function startGame(p_participants) {
     var participants = p_participants;

@@ -23,6 +23,8 @@ var app = require("http").createServer(function(req, resp) {
 });
 
 var players = [];
+var wordsToGuess = ["house", "box", "star", "rocket"];
+var guessIndex = 0;
 
 sock = socketio.listen(app);
 sock.sockets.on("connection", function(socket) {
@@ -32,14 +34,33 @@ sock.sockets.on("connection", function(socket) {
         return;
     }
     
-    players[players.length] = socket;
+    players[players.length] = {sock: socket};
     if(players.length == 2) {
-        players[0].emit('hello', {turn: "draw"});
-        players[1].emit('hello', {turn: "guess"});        
+        players[0].turn = "draw";
+        players[1].turn = "guess";
+        
+        players[0].sock.emit('turn', {turn: "draw", word: wordsToGuess[guessIndex]});
+        players[1].sock.emit('turn', {turn: "guess"});        
     }
     
     socket.on("draw", function(point) {
         socket.broadcast.emit("draw", point);
+    });
+    
+    socket.on("guess", function(guess) {
+        if(guess.word === wordsToGuess[guessIndex]) {
+            guessIndex++;            
+            for(var i=0;i<players.length;i++) {
+                if(players[i].turn === "draw") {
+                    players[i].turn = "guess";
+                    players[i].sock.emit("turn",{turn: "guess"});
+                }
+                else {
+                    players[i].turn = "draw";
+                    players[i].sock.emit("turn",{turn: "draw", word: wordsToGuess[guessIndex]});                    
+                }
+            }
+        }
     });
 });
 

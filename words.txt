@@ -1,0 +1,6 @@
+box
+house
+star
+rocket
+glasses
+tree

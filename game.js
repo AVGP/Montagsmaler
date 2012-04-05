@@ -31,6 +31,7 @@ $(document).ready(function() {
     });
     
     sock.on("draw", function(point) {
+        if(myTurn === "draw") return; //when we're drawing, we should disregard "enemy" input
         pathPoints.push(point);
         redraw();
     });
@@ -41,7 +42,7 @@ $(document).ready(function() {
     //
     
     $("#canvas").mousedown(function(e) {
-        if(myTurn !== "draw") return;
+        if(myTurn !== "draw" || isPainting === true) return;
         isPainting = true;
         addPathPoint(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
         redraw();
@@ -55,8 +56,15 @@ $(document).ready(function() {
         }
     });
     
-    $("#canvas").mouseup(function() { isPainting = false; });
+    $("#canvas").mouseup(function() {
+        isPainting = false; 
+    });
         
+    $("#skip").click(function() {
+        if(myTurn !== "draw") return;
+        sock.emit("skip", {msg: "Wer das liest is doof."});
+    });
+    
     
     //
     // Keyboard event

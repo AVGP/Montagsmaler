@@ -51,6 +51,7 @@ $(document).ready(function() {
     $("#canvas").mousemove(function(e) {
         if(myTurn !== "draw") return;
         if(isPainting) {
+            if(e.pageX - this.offsetLeft == 251 && e.pageY - this.offsetTop == 251) return; //Ugly bug.
             addPathPoint(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, false);
             redraw();
         }

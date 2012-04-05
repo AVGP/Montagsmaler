@@ -23,8 +23,9 @@ var app = require("http").createServer(function(req, resp) {
 });
 
 var players = [];
-var wordsToGuess = ["house", "box", "star", "rocket"];
-var guessIndex = 0;
+var wordsToGuess = fs.readFileSync("words.txt").toString().split("\n");
+console.log("Game ready.");
+var guessIndex = Math.round(Math.random() * (wordsToGuess.length-1));
 
 sock = socketio.listen(app);
 sock.sockets.on("connection", function(socket) {
@@ -49,7 +50,7 @@ sock.sockets.on("connection", function(socket) {
     
     socket.on("guess", function(guess) {
         if(guess.word === wordsToGuess[guessIndex]) {
-            guessIndex++;            
+            guessIndex = Math.round(Math.random() * (wordsToGuess.length-1))
             for(var i=0;i<players.length;i++) {
                 if(players[i].turn === "draw") {
                     players[i].turn = "guess";
@@ -61,6 +62,11 @@ sock.sockets.on("connection", function(socket) {
                 }
             }
         }
+    });
+    
+    socket.on("skip", function() {
+        guessIndex = Math.round(Math.random() * (wordsToGuess.length-1))
+        socket.emit("turn", {turn: "draw", word: wordsToGuess[guessIndex]});
     });
 });
 

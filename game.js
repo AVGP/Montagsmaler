@@ -34,11 +34,7 @@ $(document).ready(function() {
         pathPoints.push(point);
         redraw();
     });
-    
-    sock.on("guess", function(guess) {
-        console.log("guess: " + guess.word);
-    });
-    
+        
     
     //
     // Mouse events

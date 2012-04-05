@@ -2,8 +2,10 @@ var context = null;
 var sock = null;
 var pathPoints = [];
 var isPainting = false;
+var myTurn = null;
 
 $(document).ready(function() {
+    convertTouchToMouse("canvas");
 	context = document.getElementById("canvas").getContext("2d");
     
     
@@ -17,14 +19,24 @@ $(document).ready(function() {
         $("#status").html("Waiting for other player..");
     });
 
-    sock.on("hello", function(data) {
-        if(data.turn === "draw") $("#status").html("You need to draw");
-        else if(data.turn === "guess") $("#status").html("You need to guess");
+    sock.on("turn", function(data) {
+        pathPoints = [];
+        redraw();
+        myTurn = data.turn;
+        if(data.turn === "draw") {
+            $("#status").html("You need to draw \"" + data.word + "\"");
+        } else if(data.turn === "guess") {
+            $("#status").html("You need to guess");
+        }
     });
     
     sock.on("draw", function(point) {
         pathPoints.push(point);
         redraw();
+    });
+    
+    sock.on("guess", function(guess) {
+        console.log("guess: " + guess.word);
     });
     
     
@@ -33,12 +45,14 @@ $(document).ready(function() {
     //
     
     $("#canvas").mousedown(function(e) {
+        if(myTurn !== "draw") return;
         isPainting = true;
         addPathPoint(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
         redraw();
     });
     
     $("#canvas").mousemove(function(e) {
+        if(myTurn !== "draw") return;
         if(isPainting) {
             addPathPoint(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, false);
             redraw();
@@ -46,12 +60,22 @@ $(document).ready(function() {
     });
     
     $("#canvas").mouseup(function() { isPainting = false; });
-
+        
     
     //
-    // Touch events
+    // Keyboard event
     //
-        
+    
+    $("#guessform").submit(function() {
+        if(myTurn !== "guess") return;
+        sock.emit("guess", { word: $("#guess").val()});
+    });
+    
+    
+    //
+    // Drawing related
+    //
+    
     function addPathPoint(x,y, restart) {
         var point = {
             "x": x, 

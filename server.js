@@ -29,45 +29,49 @@ var guessIndex = Math.round(Math.random() * (wordsToGuess.length-1));
 
 sock = socketio.listen(app);
 sock.sockets.on("connection", function(socket) {
-    console.log("Connection");
-    if(players.length == 2) {
-        socket.emit("full", {});
-        return;
-    }
-    
     players[players.length] = {sock: socket};
     if(players.length == 2) {
-        players[0].turn = "draw";
-        players[1].turn = "guess";
-        
-        players[0].sock.emit('turn', {turn: "draw", word: wordsToGuess[guessIndex]});
-        players[1].sock.emit('turn', {turn: "guess"});        
+        startGame(players);
+        players = [];
     }
-    
-    socket.on("draw", function(point) {
-        socket.broadcast.emit("draw", point);
-    });
-    
-    socket.on("guess", function(guess) {
-        if(guess.word === wordsToGuess[guessIndex]) {
-            guessIndex = Math.round(Math.random() * (wordsToGuess.length-1))
-            for(var i=0;i<players.length;i++) {
-                if(players[i].turn === "draw") {
-                    players[i].turn = "guess";
-                    players[i].sock.emit("turn",{turn: "guess"});
-                }
-                else {
-                    players[i].turn = "draw";
-                    players[i].sock.emit("turn",{turn: "draw", word: wordsToGuess[guessIndex]});                    
-                }
-            }
-        }
-    });
-    
-    socket.on("skip", function() {
-        guessIndex = Math.round(Math.random() * (wordsToGuess.length-1))
-        socket.emit("turn", {turn: "draw", word: wordsToGuess[guessIndex]});
-    });
 });
 
 app.listen(8092);
+
+function startGame(p_participants) {
+    var participants = p_participants;
+    participants[0].turn = "draw";
+    participants[1].turn = "guess";
+        
+    participants[0].sock.emit('turn', {turn: "draw", word: wordsToGuess[guessIndex]});
+    participants[1].sock.emit('turn', {turn: "guess"});        
+    
+    for(var pIndex=0;pIndex < participants.length;pIndex++) {
+        participants[pIndex].sock.on("draw", function(point) {
+            this.broadcast.emit("draw", point);
+        });
+    
+        participants[pIndex].sock.on("guess", function(guess) {
+            if(guess.word === wordsToGuess[guessIndex]) {
+                guessIndex = Math.round(Math.random() * (wordsToGuess.length-1))
+                for(var i=0;i<participants.length;i++) {
+                    if(participants[i].turn === "draw") {
+                        participants[i].turn = "guess";
+                        participants[i].sock.emit("turn",{turn: "guess"});
+                    }
+                    else {
+                        participants[i].turn = "draw";
+                        participants[i].sock.emit("turn",{turn: "draw", word: wordsToGuess[guessIndex]});                    
+                    }
+                }
+            }
+        });
+    
+        participants[pIndex].sock.on("skip", function() {
+            guessIndex = Math.round(Math.random() * (wordsToGuess.length-1))
+            this.emit("turn", {turn: "draw", word: wordsToGuess[guessIndex]});
+        });
+        
+        participants[pIndex].sock.on("disconnect", function() { this.broadcast.emit("disconnect"); });
+    }
+}

@@ -16,6 +16,7 @@ $(document).ready(function() {
     $("#status").html("Connecting...");
     sock = io.connect();
     sock.on("connect", function(data) {
+        $("#game").show();
         $("#status").html("Waiting for other player..");
     });
 
@@ -36,6 +37,12 @@ $(document).ready(function() {
         redraw();
     });
         
+    sock.on("disconnect", function() {
+        sock.disconnect();
+        $("#status").html("The other player is disconnected. Reload the page.");
+        $("#game").hide();
+    });
+    
     
     //
     // Mouse events

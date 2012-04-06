@@ -81,6 +81,7 @@ $(document).ready(function() {
     $("#guessform").submit(function() {
         if(myTurn !== "guess") return;
         sock.emit("guess", { word: $("#guess").val()});
+        $("#guess").val("");
     });
     
     

@@ -24,7 +24,7 @@ var app = require("http").createServer(function(req, resp) {
 });
 
 var players = [];
-var wordsToGuess = fs.readFileSync("./words.txt").toString().split("\n");
+var wordsToGuess = fs.readFileSync(__dirname + "/words.txt").toString().split("\n");
 console.log("Game ready. (Listening on " + port + ")");
 var guessIndex = Math.round(Math.random() * (wordsToGuess.length-1));
 

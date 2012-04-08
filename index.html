@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html>
 	<head>
-        <title>Montagsmaler 0.1a</title>
+        <title>Montagsmaler 0.1b</title>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="game.js"></script>
         <script type="text/javascript" src="touch.js"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <link rel="stylesheet" href="style.css" type="text/css" />
+        <link href='http://fonts.googleapis.com/css?family=Luckiest+Guy' rel='stylesheet' type='text/css'>
+        <meta name="viewport" content="width=600, height=600, initial-scale=1.0, user-scalable=yes">
 	</head>
 	<body>
-        <div id="status"></div>
-        <div id="game">
-            <canvas id="canvas" width="500" height="500" style="border: #888 solid 1px; cursor: crosshair;"></canvas>
-            <form action="javascript:void(0)" id="guessform">
-                <input id="guess" />
-                <button type="submit">Guess</button>
-            </form>
-            <button type="button" id="skip">Skip</button>
-            <div id="console"></div>
+        <div id="wrap">
+            <h1>Montagsmaler</h1>
+            <div id="status"></div>
+            <div id="game">
+                <canvas id="canvas" width="500" height="300" style="border: #888 solid 1px; cursor: crosshair;"></canvas>
+                <form action="javascript:void(0)" id="guessform">
+                    <input id="guess" />
+                    <button type="submit">Guess</button>
+                </form>
+                <button type="button" id="skip">Skip</button>
+            </div>
         </div>
 	</body>
 </html>

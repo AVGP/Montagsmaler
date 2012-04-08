@@ -1,0 +1,58 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 99%;
+}
+
+body {
+    background:linear-gradient(top, #eef, #efe);
+    background:-webkit-linear-gradient(top, #eef, #efe); 
+    background:-moz-linear-gradient(top,  #eef, #efe); 
+    background:-o-linear-gradient(top, #eef, #efe); 
+    background:-ms-linear-gradient(top,  #eef, #efe);
+}
+
+h1, h2, h3, h4 {
+    padding-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Luckiest Guy', sans-serif;
+    text-align: center;
+}
+
+#wrap {
+    width: 600px;
+    margin: 0px auto;
+    background: #fff;
+}
+
+.info, .error {
+    border-radius: 5px;
+    margin: 2px;
+    padding: 6px;
+}
+
+.info {
+    background: #eff;
+    border: 2px solid #cee;
+}
+
+.error {
+    background: #fee;
+    border: 2px solid #ecc;
+}
+
+#game {
+    width: 500px;
+    margin: 0px auto;
+}
+
+form, input, button {
+    margin: 0px;
+    padding: 0px;
+}
+
+input {
+    width: 450px;
+    font-size: 20px;
+}

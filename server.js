@@ -73,6 +73,10 @@ function startGame(p_participants) {
             this.emit("turn", {turn: "draw", word: wordsToGuess[guessIndex]});
         });
         
+        participants[pIndex].sock.on("reset", function() {
+            this.broadcast.emit("reset");
+        });
+        
         participants[pIndex].sock.on("disconnect", function() { this.broadcast.emit("disconnect"); });
     }
 }

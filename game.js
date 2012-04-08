@@ -25,8 +25,12 @@ $(document).ready(function() {
         redraw();
         myTurn = data.turn;
         if(data.turn === "draw") {
+            $("#guessform").fadeOut();
+            $("#skip, #reset").fadeIn();
             $("#status").html("You need to draw \"" + data.word + "\"").removeClass("error").addClass("info").fadeOut().delay(800).slideDown();
         } else if(data.turn === "guess") {
+            $("#guessform").fadeIn();
+            $("#skip, #reset").fadeOut();
             $("#status").html("You need to guess").removeClass("error").addClass("info").fadeOut().delay(800).slideDown();
         }
     });
@@ -37,6 +41,11 @@ $(document).ready(function() {
         redraw();
     });
         
+    sock.on("reset", function() {
+        pathPoints = [];
+        redraw();
+    });
+    
     sock.on("disconnect", function() {
         sock.disconnect();
         $("#status").html("The other player is disconnected. Reload the page.").removeClass("info").addClass("error").fadeOut().delay(800).slideDown();
@@ -73,6 +82,12 @@ $(document).ready(function() {
         sock.emit("skip", {msg: "Wer das liest is doof."});
     });
     
+    $("#reset").click(function() {
+        if(myTurn !== "draw") return;
+        sock.emit("reset", { msg: "Nich gucken!"});
+        pathPoints = [];
+        redraw();
+    });
     
     //
     // Keyboard event

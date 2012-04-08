@@ -13,11 +13,11 @@ $(document).ready(function() {
     // Socket fun
     //
     
-    $("#status").html("Connecting...");
+    $("#status").html("Connecting...").addClass("info");
     sock = io.connect();
     sock.on("connect", function(data) {
         $("#game").show();
-        $("#status").html("Waiting for other player..");
+        $("#status").html("Waiting for other player..").removeClass("error").addClass("info");
     });
 
     sock.on("turn", function(data) {
@@ -25,9 +25,9 @@ $(document).ready(function() {
         redraw();
         myTurn = data.turn;
         if(data.turn === "draw") {
-            $("#status").html("You need to draw \"" + data.word + "\"");
+            $("#status").html("You need to draw \"" + data.word + "\"").removeClass("error").addClass("info").fadeOut().delay(800).slideDown();
         } else if(data.turn === "guess") {
-            $("#status").html("You need to guess");
+            $("#status").html("You need to guess").removeClass("error").addClass("info").fadeOut().delay(800).slideDown();
         }
     });
     
@@ -39,7 +39,7 @@ $(document).ready(function() {
         
     sock.on("disconnect", function() {
         sock.disconnect();
-        $("#status").html("The other player is disconnected. Reload the page.");
+        $("#status").html("The other player is disconnected. Reload the page.").removeClass("info").addClass("error").fadeOut().delay(800).slideDown();
         $("#game").hide();
     });
     

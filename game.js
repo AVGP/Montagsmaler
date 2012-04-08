@@ -27,7 +27,7 @@ $(document).ready(function() {
         if(data.turn === "draw") {
             $("#guessform").fadeOut();
             $("#skip, #reset").fadeIn();
-            $("#status").html("You need to draw \"" + data.word + "\"").removeClass("error").addClass("info").fadeOut().delay(800).slideDown();
+            $("#status").fadeOut().html("You need to draw \"" + data.word + "\"").removeClass("error").addClass("info").delay(800).slideDown();
         } else if(data.turn === "guess") {
             $("#guessform").fadeIn();
             $("#skip, #reset").fadeOut();
@@ -44,6 +44,10 @@ $(document).ready(function() {
     sock.on("reset", function() {
         pathPoints = [];
         redraw();
+    });
+    
+    sock.on("guess", function(guess) {
+        $("#status").html("The other player guessed \"" + guess.word + "\"").removeClass("error").addClass("info").fadeOut().delay(800).slideDown();        
     });
     
     sock.on("disconnect", function() {

@@ -67,7 +67,7 @@ function startGame(p_participants) {
                 }
             }
             else {
-                this.broadcast.emit("guess", {word: guess});
+                this.broadcast.emit("guess", guess);
             }
         });
     

@@ -3,7 +3,7 @@ var fs = require("fs");
 var url = require("url");
 var port = process.env['app_port'] || 8092;
 
-var app = require("https").createServer(function(req, resp) {
+var app = require("http").createServer(function(req, resp) {
     var path = url.parse(req.url).pathname;
     if(path == "/") path = "/index.html";
     console.log("Path "+path+" requested.");

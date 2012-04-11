@@ -1,9 +1,13 @@
 var socketio = require("socket.io");
 var fs = require("fs");
 var url = require("url");
-var port = process.env['app_port'] || 8092;
+var port = process.env['app_port'] || 443;
 
-var app = require("http").createServer(function(req, resp) {
+var app = require("https").createServer({
+        ca: fs.readFileSync(__dirname + "/sub.class1.server.ca.pem"),
+        key: fs.readFileSync(__dirname + "/ssl.key"),
+        cert: fs.readFileSync(__dirname + "/ssl.crt")
+    }, function(req, resp) {
     var path = url.parse(req.url).pathname;
     if(path == "/") path = "/index.html";
     console.log("Path "+path+" requested.");

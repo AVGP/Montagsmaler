@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# fbmontagsmaler: http://ogp.me/ns/fb/fbmontagsmaler#">
+        <meta property="fb:app_id"      content="351953848173431" /> 
+        <meta property="og:type"        content="fbmontagsmaler:word" /> 
+        <meta property="og:url"         content="http://montagsmaler.nodester.com/image.html?img=" /> 
+        <meta property="og:title"       content="word" /> 
+        <meta property="og:description" content="Play Montagsmaler online: http://montagsmaler.nodester.com" /> 
+        <meta property="og:image"       content="http://montagsmaler.nodester.com/image.html?img=" />
+
+        <title></title>        
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var param = window.location.href.match(/\?img=((\w+)_.+)$/);
+                var imgName = param[1];
+                var word = param[2];
+
+                $("title").text(word);
+                $("#title").html("<img src=\"gallery/img_"+imgName+".png\">");
+
+                $("meta[property='og:title']").attr("content", word);
+                $("meta[property='og:url']").attr("content", "http://montagsmaler.nodester.com/image.html?img=" + imgName);
+                $("meta[property='og:image']").attr("content", "http://montagsmaler.nodester.com/gallery/img_" + imgName + ".png");
+            });
+        </script>
+    </head>
+    <body>
+        <h1 id="title">Loading...</h1>
+    </body>
+</html>

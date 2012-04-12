@@ -38,7 +38,7 @@ function deliverDrawingImage(img) {
     var imgName = img;
     try {
         var word = imgName.match(/^(\w+)_/)[1];
-        var content = fs.readFileSync("image.html").toString();
+        var content = fs.readFileSync(__dirname + "/image.html").toString();
     
         content = content.replace(/\{\{imgName\}\}/g, imgName);
         content = content.replace(/\{\{word\}\}/g, word);

@@ -84,7 +84,7 @@ function startGame(p_participants) {
             var img = data.imgData;
             img = img.replace(/^data:image\/\w+;base64,/, "");
             var buffer = new Buffer(img, "base64");
-            fs.writeFile(__dirname + "/gallery/img_" + data.name + ".png", buffer);
+            fs.writeFile(__dirname + "/img_" + data.name + ".png", buffer);
         });
         
         participants[pIndex].sock.on("disconnect", function() { this.broadcast.emit("disconnect"); });

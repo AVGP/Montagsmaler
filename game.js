@@ -3,6 +3,7 @@ var sock = null;
 var pathPoints = [];
 var isPainting = false;
 var myTurn = null;
+var wordToDraw = "";
 
 $(document).ready(function() {
     convertTouchToMouse("canvas");
@@ -26,11 +27,12 @@ $(document).ready(function() {
         myTurn = data.turn;
         if(data.turn === "draw") {
             $("#guessform").fadeOut();
-            $("#skip, #reset").fadeIn();
+            $("#skip, #reset, #save").fadeIn();
             $("#status").fadeOut().html("You need to draw \"" + data.word + "\"").removeClass("error").addClass("info").delay(800).slideDown();
+            wordToDraw = data.word;
         } else if(data.turn === "guess") {
             $("#guessform").fadeIn();
-            $("#skip, #reset").fadeOut();
+            $("#skip, #reset, #save").fadeOut();
             $("#status").html("You need to guess").removeClass("error").addClass("info").fadeOut().delay(800).slideDown();
         }
     });
@@ -93,6 +95,13 @@ $(document).ready(function() {
         redraw();
     });
     
+    $("#save").click(function() {
+        sock.emit("save", {
+            imgData: $("#canvas")[0].toDataURL(), 
+            name: wordToDraw + "_" + Date.parse(new Date().toGMTString())
+        });
+    });
+    
     //
     // Keyboard event
     //
@@ -122,9 +131,12 @@ $(document).ready(function() {
     
     function redraw() {
         context.clearRect(0, 0, 500, 500);
+        context.fillStyle   = "#fff";
         context.strokeStyle = "#000";
         context.lineJoin    = "round";
         context.lineWidth   = 2;
+
+        context.fillRect(0, 0, 500, 500);
         
         for(var i=0;i<pathPoints.length-1;i++) {
             context.beginPath();

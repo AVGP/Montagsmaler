@@ -79,6 +79,13 @@ function startGame(p_participants) {
         participants[pIndex].sock.on("reset", function() {
             this.broadcast.emit("reset");
         });
+
+        participants[pIndex].sock.on("save", function(data) {
+            var img = data.imgData;
+            img = img.replace(/^data:image\/\w+;base64,/, "");
+            var buffer = new Buffer(img, "base64");
+            fs.writeFile(__dirname + "/gallery/img_" + data.name + ".png", buffer);
+        });
         
         participants[pIndex].sock.on("disconnect", function() { this.broadcast.emit("disconnect"); });
     }

@@ -17,11 +17,11 @@
                 var word = param[2];
 
                 $("title").text(word);
-                $("#title").html("<img src=\"gallery/img_"+imgName+".png\">");
+                $("#title").html("<img src=\"img_"+imgName+".png\">");
 
                 $("meta[property='og:title']").attr("content", word);
                 $("meta[property='og:url']").attr("content", "http://montagsmaler.nodester.com/image.html?img=" + imgName);
-                $("meta[property='og:image']").attr("content", "http://montagsmaler.nodester.com/gallery/img_" + imgName + ".png");
+                $("meta[property='og:image']").attr("content", "http://montagsmaler.nodester.com/img_" + imgName + ".png");
             });
         </script>
     </head>

@@ -4,9 +4,20 @@ var url = require("url");
 var port = process.env['app_port'] || 8092;
 
 var app = require("http").createServer(function(req, resp) {
-    var path = url.parse(req.url).pathname;
+    var urlobj = url.parse(req.url, true);
+    var path = urlobj.pathname;
     if(path == "/") path = "/index.html";
     console.log("Path "+path+" requested.");
+    
+    if(path == "/image.html") {
+        console.log(urlobj.query);
+        var imgName = urlobj.query["img"];
+        resp.writeHead(200,"Content-Type: text/html");
+        resp.write(deliverDrawingImage(imgName));
+        resp.end();
+        return;
+    }
+    
     fs.readFile( __dirname + path, function(error, data) {
         if(error) {
             resp.writeHead(404);
@@ -22,6 +33,20 @@ var app = require("http").createServer(function(req, resp) {
         resp.end();
     });
 });
+
+function deliverDrawingImage(img) {
+    var imgName = img;
+    try {
+        var word = imgName.match(/^(\w+)_/)[1];
+        var content = fs.readFileSync("image.html").toString();
+    
+        content = content.replace(/\{\{imgName\}\}/g, imgName);
+        content = content.replace(/\{\{word\}\}/g, word);
+        return content;
+    } catch(e) {
+        return "";
+    }
+}
 
 var players = [];
 var wordsToGuess = fs.readFileSync(__dirname + "/words.txt").toString().split("\n");

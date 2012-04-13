@@ -27,6 +27,7 @@ var app = require("http").createServer(function(req, resp) {
         
         contentType = "text/html";
         if(path.match(/\.js$/) !== null) contentType = "text/javascript";
+        else if(path.match(/\.png$/) !== null) contentType = "image/png";
         
         resp.writeHead(200, "Content-Type:"+ contentType);
         resp.write(data);

@@ -9,6 +9,8 @@ $(document).ready(function() {
     convertTouchToMouse("canvas");
 	context = document.getElementById("canvas").getContext("2d");
     
+    $("#dialog").dialog({modal: true, autoOpen: false, width: "80%"});
+    
     
     //
     // Socket fun
@@ -56,6 +58,10 @@ $(document).ready(function() {
         sock.disconnect();
         $("#status").html("The other player is disconnected. Reload the page.").removeClass("info").addClass("error").fadeOut().delay(800).slideDown();
         $("#game").hide();
+    });
+    
+    sock.on("saved", function(data) {
+        $("#dialog").html("<p>Your image is available at <a href=\"image.html?img=" + data.img + "\" target=\"_blank\">" + document.location.href + "/image.html?img=" + data.img + "</a>.</p>").dialog("open");
     });
     
     

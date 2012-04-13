@@ -110,7 +110,8 @@ function startGame(p_participants) {
             var img = data.imgData;
             img = img.replace(/^data:image\/\w+;base64,/, "");
             var buffer = new Buffer(img, "base64");
-            fs.writeFile(__dirname + "/img_" + data.name + ".png", buffer);
+            fs.writeFileSync(__dirname + "/img_" + data.name + ".png", buffer);
+            this.emit("saved", {img: data.name});
         });
         
         participants[pIndex].sock.on("disconnect", function() { this.broadcast.emit("disconnect"); });

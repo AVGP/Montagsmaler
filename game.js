@@ -62,11 +62,12 @@ $(document).ready(function() {
     
     sock.on("saved", function(data) {
         var url = "/me/fbmontagsmaler:draw?word=" + encodeURIComponent("http://montagsmaler.nodester.com/image.html?img=" + data.img);
+        console.log("D:");
+        console.log(url);
         FB.api(
             url,
             'post',
             function(response) {
-                console.log(data.img);
                 if (!response || response.error) {
                     alert('Error occured');
                     console.log(response.error);

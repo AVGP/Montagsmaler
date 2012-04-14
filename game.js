@@ -61,10 +61,12 @@ $(document).ready(function() {
     });
     
     sock.on("saved", function(data) {
+        var url = "/me/fbmontagsmaler:draw?word=" + encodeURIComponent("http://montagsmaler.nodester.com/image.html?img=" + data.img);
         FB.api(
-            '/me/fbmontagsmaler:draw?word=http://montagsmaler.nodester.com/image.html?img=' + data.img,
+            url,
             'post',
             function(response) {
+                console.log(data.img);
                 if (!response || response.error) {
                     alert('Error occured');
                     console.log(response.error);
@@ -72,7 +74,7 @@ $(document).ready(function() {
                     alert('Posting was successful! Action ID: ' + response.id);
                 }
         });
-        $("#dialog").html("<p>Your image is available at <a href=\"image.html?img=" + data.img + "\" target=\"_blank\">" + document.location.href + "/image.html?img=" + data.img + "</a>.</p>").dialog("open");
+        $("#dialog").html("<p>Your image is available at <a href=\"image.html?img=" + data.img + "\" target=\"_blank\">" + document.location.href + "image.html?img=" + data.img + "</a>.</p>").dialog("open");
     });
     
     

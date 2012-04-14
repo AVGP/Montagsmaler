@@ -61,6 +61,16 @@ $(document).ready(function() {
     });
     
     sock.on("saved", function(data) {
+        FB.api(
+            '/me/fbmontagsmaler:draw?word=' + document.location.href + "/image.html?img=" + data.img,
+            'post',
+            function(response) {
+                if (!response || response.error) {
+                    alert('Error occured');
+                } else {
+                    alert('Posting was successful! Action ID: ' + response.id);
+                }
+        });
         $("#dialog").html("<p>Your image is available at <a href=\"image.html?img=" + data.img + "\" target=\"_blank\">" + document.location.href + "/image.html?img=" + data.img + "</a>.</p>").dialog("open");
     });
     

@@ -12,6 +12,23 @@
         <link href='http://fonts.googleapis.com/css?family=Luckiest+Guy' rel='stylesheet' type='text/css'>
         <meta name="viewport" content="width=600, height=600, initial-scale=1.0, user-scalable=yes">
         <meta name="google-site-verification" content="gMbpKKtKwT8-8S9SgiWyMZ2x_YfGdII1HIixU7ho4LE" />
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                appId      : '351953848173431',
+                status     : true,
+                cookie     : true,
+                xfbml      : true
+                });
+            };
+
+            (function(d){
+                var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+                js = d.createElement('script'); js.id = id; js.async = true;
+                js.src = "//connect.facebook.net/en_US/all.js";
+                d.getElementsByTagName('head')[0].appendChild(js);
+            }(document));
+        </script>
 	</head>
 	<body>
         <div id="wrap">

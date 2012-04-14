@@ -69,10 +69,8 @@ $(document).ready(function() {
             'post',
             function(response) {
                 if (!response || response.error) {
-                    alert('Error occured');
                     console.log(response.error);
                 } else {
-                    alert('Posting was successful! Action ID: ' + response.id);
                 }
         });
         $("#dialog").html("<p>Your image is available at <a href=\"image.html?img=" + data.img + "\" target=\"_blank\">" + document.location.href + "image.html?img=" + data.img + "</a>.</p>").dialog("open");

@@ -62,11 +62,12 @@ $(document).ready(function() {
     
     sock.on("saved", function(data) {
         FB.api(
-            '/me/fbmontagsmaler:draw?word=' + document.location.href + "/image.html?img=" + data.img,
+            '/me/fbmontagsmaler:draw?word=http://montagsmaler.nodester.com/image.html?img=' + data.img,
             'post',
             function(response) {
                 if (!response || response.error) {
                     alert('Error occured');
+                    console.log(response.error);
                 } else {
                     alert('Posting was successful! Action ID: ' + response.id);
                 }

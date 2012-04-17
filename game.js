@@ -35,19 +35,21 @@ $(document).ready(function() {
             $("#status").fadeOut().html("You need to draw \"" + data.word + "\"").removeClass("error").addClass("info").delay(800).slideDown();
             wordToDraw = data.word;
         } else if(data.turn === "guess") {
-            $("#dialog").html("<p>The other player guessed the word.</p><p>If you want, you can save the image now.</p>")
-                .dialog("option", "buttons", {
-                    "save & share image": function() {
-                        sock.emit("save", {
-                            imgData: tmpImage, 
-                            name: wordToDraw + "_" + Date.parse(new Date().toGMTString())
-                        });                        
-                    },
-                    "continue": function() {
-                        $(this).dialog("close");
-                    }
-                })
-                .dialog("open");
+            if(wordToDraw !== "") {
+                $("#dialog").html("<p>The other player guessed the word.</p><p>If you want, you can save the image now.</p>")
+                    .dialog("option", "buttons", {
+                        "save & share image": function() {
+                            sock.emit("save", {
+                                imgData: tmpImage, 
+                                name: wordToDraw + "_" + Date.parse(new Date().toGMTString())
+                            });
+                        },
+                        "continue": function() {
+                            $(this).dialog("close");
+                        }
+                    })
+                    .dialog("open");
+            }
             
             $("#guessform").fadeIn();
             $("#skip, #reset, #save").fadeOut();

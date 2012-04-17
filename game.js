@@ -24,15 +24,31 @@ $(document).ready(function() {
     });
 
     sock.on("turn", function(data) {
+        myTurn = data.turn;
+        var tmpImage = $("#canvas")[0].toDataURL();
         pathPoints = [];
         redraw();
-        myTurn = data.turn;
+        
         if(data.turn === "draw") {
             $("#guessform").fadeOut();
             $("#skip, #reset, #save").fadeIn();
             $("#status").fadeOut().html("You need to draw \"" + data.word + "\"").removeClass("error").addClass("info").delay(800).slideDown();
             wordToDraw = data.word;
         } else if(data.turn === "guess") {
+            $("#dialog").html("<p>The other player guessed the word.</p><p>If you want, you can save the image now.</p>")
+                .dialog("option", "buttons", {
+                    "save & share image": function() {
+                        sock.emit("save", {
+                            imgData: tmpImage, 
+                            name: wordToDraw + "_" + Date.parse(new Date().toGMTString())
+                        });                        
+                    },
+                    "continue": function() {
+                        $(this).dialog("close");
+                    }
+                })
+                .dialog("open");
+            
             $("#guessform").fadeIn();
             $("#skip, #reset, #save").fadeOut();
             $("#status").html("You need to guess").removeClass("error").addClass("info").fadeOut().delay(800).slideDown();
@@ -73,7 +89,8 @@ $(document).ready(function() {
                 } else {
                 }
         });
-        $("#dialog").html("<p>Your image is available at <a href=\"image.html?img=" + data.img + "\" target=\"_blank\">" + document.location.href + "image.html?img=" + data.img + "</a>.</p>").dialog("open");
+        $("#dialog").html("<p>Your image is available at <a href=\"image.html?img=" + data.img + "\" target=\"_blank\">" + document.location.href + "image.html?img=" + data.img + "</a>.</p>")
+        .dialog("buttons", {}).dialog("open");
     });
     
     

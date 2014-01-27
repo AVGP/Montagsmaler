@@ -30,3 +30,6 @@ In addition you don't have to go thru a lenghty registration process, just play!
 * Fully updating to node 0.10
 * Refactoring as this evolved from a very crude prototype into something people actually care about
 
+# License 
+
+MIT
